@@ -60,12 +60,26 @@ def _4(ff: PeptideIDListFmt) -> pd.Series:
     with ff.open() as fh:
         ids = [id.strip() for id in fh.readlines()]
     return pd.Series(True, index = ids)
-    
+
 # transform a PepsirfContingencyTSVFormat into a pandas dataframe
 @plugin.register_transformer
 def _5(ff: PepsirfContingencyTSVFormat) -> pd.DataFrame:
-    
+
     dataframe = pd.read_csv(str(ff), sep="\t", index_col=0)
 
     return dataframe.transpose()
 
+# transform a PepsirfContingencyTSVFormat into a biom.Table
+@plugin.register_transformer
+def _6(ff: PepsirfContingencyTSVFormat) -> biom.Table:
+    pass
+
+# transform a biom.Table into a PepsirfContingencyTSV format
+@plugin.register_transformer
+def _7(ff: biom.Table) -> PepsirfContingencyTSVFormat:
+    result = PepsirfContingencyTSVFormat()
+
+    with open(str(result), 'w') as fh:
+        ff.to_tsv(direct_io=fh, observation_column_name='Sequence name')
+
+    return result
