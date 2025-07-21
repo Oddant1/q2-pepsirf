@@ -25,7 +25,8 @@ from q2_pepsirf.format_types import (
     ProteinAlignmentManifestFormat, ProteinAlignment,
     PeptideToProteinAlignmentFormat, ProteinAlignmentDirFormat,
     MutantReference, MutantReferenceFileFmt, MutantReferenceDirFmt,
-    ProteinAlignmentFmt
+    ProteinAlignmentFmt, Epitope, MappedEpitope, EpitopeFormat, EpitopeDirFmt,
+    MappedEpitopeFormat, MappedEpitopeDirFmt
 )
 from qiime2.plugin import (
     Plugin, SemanticType, model,
@@ -79,13 +80,22 @@ plugin.register_formats(
     PepsirfDemuxDiagnosticFormat, PepsirfDemuxDiagnosticDirFmt,
     ProteinAlignmentManifestFormat,
     PeptideToProteinAlignmentFormat, ProteinAlignmentFmt,
-    ProteinAlignmentDirFormat, MutantReferenceFileFmt, MutantReferenceDirFmt
+    ProteinAlignmentDirFormat, MutantReferenceFileFmt, MutantReferenceDirFmt,
+    EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt
 )
 
 # register all semantic types
 plugin.register_semantic_types(
     Normed, NormedDifference, NormedDiffRatio, NormedRatio,
-    NormedSized, Zscore, RawCounts, PairwiseEnrichment
+    NormedSized, Zscore, RawCounts, PairwiseEnrichment, Epitope, MappedEpitope
+)
+plugin.register_semantic_type_to_format(
+    FeatureTable[Epitope],
+    EpitopeDirFmt
+)
+plugin.register_semantic_type_to_format(
+    FeatureTable[MappedEpitope],
+    MappedEpitopeDirFmt
 )
 plugin.register_semantic_type_to_format(
     FeatureTable[
@@ -544,7 +554,7 @@ plugin.methods.register_function(
         "pepsirf_binary": Str,
         "input_type": s_approach,
         "outfile": Str,
-        "subjoin_input": Str, 
+        "subjoin_input": Str,
         "filter_peptide_names": Bool,
         "duplicate_evaluation": Str%Choices("include", "combine", "ignore")
     },
@@ -824,7 +834,7 @@ plugin.methods.register_function(
         "enriched_dir": "Name of a directory containing files, that contain"
             " the names of enriched peptides, one per line. Each Peptide"
             " contained within these files should have a corresponding entry"
-            " in the '--linked' input file.", 
+            " in the '--linked' input file.",
         **deconv_shared_input_descript
     },
     parameter_descriptions={

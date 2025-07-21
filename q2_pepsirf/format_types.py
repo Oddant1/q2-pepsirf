@@ -23,6 +23,14 @@ NormedSized = SemanticType(
     "NormedSized",
     variant_of=FeatureTable.field["content"]
 )
+Epitope = SemanticType(
+    "Epitope",
+    variant_of=FeatureTable.field["content"]
+)
+MappedEpitope = SemanticType(
+    "MappedEpitope",
+    variant_of=FeatureTable.field["content"]
+)
 Zscore = SemanticType("Zscore", variant_of=FeatureTable.field["content"])
 RawCounts = SemanticType("RawCounts", variant_of=FeatureTable.field["content"])
 PairwiseEnrichment = SemanticType("PairwiseEnrichment")
@@ -49,6 +57,23 @@ DemuxFastq = SemanticType("DemuxFastq")
 DemuxDiagnostic = SemanticType("DemuxDiagnostic")
 ProteinAlignment = SemanticType("ProteinAlignment")
 MutantReference = SemanticType("MutantReference")
+
+# create a format for epitope metadata
+class EpitopeFormat(model.TextFileFormat):
+    def _validate_(self, level="min"):
+        pass
+
+EpitopeDirFmt = model.SingleFileDirectoryFormat(
+    "EpitopeDirFmt", "epitope.tsv", EpitopeFormat
+)
+
+class MappedEpitopeFormat(model.TextFileFormat):
+    def _validate_(self, level="min"):
+        pass
+
+MappedEpitopeDirFmt = model.SingleFileDirectoryFormat(
+    "MappedEpitopeDirFmt", "mapped-epitope.tsv", MappedEpitopeFormat
+)
 
 # create a format for a featuretable file
 class PepsirfContingencyTSVFormat(model.TextFileFormat):
