@@ -54,10 +54,21 @@ MutantReference = SemanticType("MutantReference")
 class PepsirfContingencyTSVFormat(model.TextFileFormat):
     def _validate_(self, level="min"):
         with self.open() as fh:
-            for _, line in zip(range(1), fh):
+            # Read lines skipping comments until we either hit a valid header
+            # line and return or hit an invalid one and fail out.
+            while True:
+                line = fh.readline()
+
+                # Skip comments
+                if line.startswith('#'):
+                    continue
+
+                # The first valid line should start with this
                 if not line.startswith("Sequence name\t"):
                     raise model.ValidationError(
                         'TSV does not start with "Sequence name"')
+
+                return
 
 
 PepsirfContingencyTSVDirFmt = model.SingleFileDirectoryFormat(
@@ -92,7 +103,7 @@ class EnrichedPeptideDirFmt(model.DirectoryFormat):
     @pairwise.set_path_maker
     def pairwise_pathmaker(self, comparisons, suffix):
         return f'{"~".join(comparisons)}_{suffix}.txt'
-    
+
     failures = model.File(
         "failedEnrichment.txt",
         format=EnrichmentFailureFmt
@@ -456,7 +467,7 @@ class PeptideToProteinAlignmentFormat(model.TextFileFormat):
 #     )
 #     @alignments.set_path_maker
 #     def alignment_pathmaker(self, name):
-#         return "%sAligned.txt" % name 
+#         return "%sAligned.txt" % name
 
 
 class ProteinAlignmentFmt(model.TextFileFormat):
