@@ -2,13 +2,16 @@
 from q2_pepsirf.format_types import (
     PepsirfContingencyTSVFormat, PepsirfInfoSumOfProbesFmt,
     EnrichedPeptideDirFmt, PeptideIDListFmt, EpitopeFormat,
-    MappedEpitopeFormat
+    MappedEpitopeFormat, GMTFormat
 )
 from q2_pepsirf.plugin_setup import plugin
 from q2_types.feature_table import BIOMV210Format
 
 import pandas as pd
 import biom
+
+from csv import QUOTE_NONE
+
 
 # Transform a PepsirfContingencyTSVFormat into a BIOMV210Format
 @plugin.register_transformer
@@ -85,7 +88,7 @@ def _7(ff: biom.Table) -> PepsirfContingencyTSVFormat:
 
 @plugin.register_transformer
 def _9(ff: EpitopeFormat) -> pd.DataFrame:
-    result = pd.read_csv(str(ff), sep='\t', index_col=0)
+    result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
 
 @plugin.register_transformer
@@ -96,11 +99,21 @@ def _8(ff: pd.DataFrame) -> EpitopeFormat:
 
 @plugin.register_transformer
 def _10(ff: MappedEpitopeFormat) -> pd.DataFrame:
-    result = pd.read_csv(str(ff), sep='\t', index_col=0)
+    result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
 
 @plugin.register_transformer
 def _11(ff: pd.DataFrame) -> MappedEpitopeFormat:
     result = MappedEpitopeFormat()
     ff.to_csv(str(result), sep='\t')
+    return result
+
+@plugin.register_transformer
+def _12(ff: GMTFormat) -> pd.DataFrame:
+    pass
+
+@plugin.register_transformer
+def _13(ff: pd.DataFrame) -> GMTFormat:
+    result = GMTFormat()
+    ff.to_csv(str(result), sep='\t', header=False, quoting=QUOTE_NONE, escapechar=' ')
     return result

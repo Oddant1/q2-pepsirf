@@ -31,6 +31,7 @@ MappedEpitope = SemanticType(
     "MappedEpitope",
     variant_of=FeatureTable.field["content"]
 )
+GMT = SemanticType("GMT")
 Zscore = SemanticType("Zscore", variant_of=FeatureTable.field["content"])
 RawCounts = SemanticType("RawCounts", variant_of=FeatureTable.field["content"])
 PairwiseEnrichment = SemanticType("PairwiseEnrichment")
@@ -57,6 +58,14 @@ DemuxFastq = SemanticType("DemuxFastq")
 DemuxDiagnostic = SemanticType("DemuxDiagnostic")
 ProteinAlignment = SemanticType("ProteinAlignment")
 MutantReference = SemanticType("MutantReference")
+
+class GMTFormat(model.TextFileFormat):
+    def _validate_(self, level="min"):
+        pass
+
+GMTDirFmt = model.SingleFileDirectoryFormat(
+    "GMTDirFmt", "map.gmt", GMTFormat
+)
 
 # create a format for epitope metadata
 class EpitopeFormat(model.TextFileFormat):
