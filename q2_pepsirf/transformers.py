@@ -10,8 +10,6 @@ from q2_types.feature_table import BIOMV210Format
 import pandas as pd
 import biom
 
-from csv import QUOTE_NONE
-
 
 # Transform a PepsirfContingencyTSVFormat into a BIOMV210Format
 @plugin.register_transformer
