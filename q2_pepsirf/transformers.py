@@ -115,5 +115,16 @@ def _12(ff: GMTFormat) -> pd.DataFrame:
 @plugin.register_transformer
 def _13(ff: pd.DataFrame) -> GMTFormat:
     result = GMTFormat()
-    ff.to_csv(str(result), sep='\t', header=False, quoting=QUOTE_NONE, escapechar=' ')
+
+    with open(str(result), 'w') as fh:
+        for _, row in ff.iterrows():
+            line = row.name + "\t\t"
+
+            for elem in row['EpitopeID']:
+                line += elem + '\t'
+
+            line = line.rstrip()
+            line += '\n'
+            fh.write(line)
+
     return result
