@@ -69,49 +69,34 @@ def _5(ff: PepsirfContingencyTSVFormat) -> pd.DataFrame:
     dataframe = pd.read_csv(str(ff), sep="\t", index_col=0)
     return dataframe.transpose()
 
-# transform a PepsirfContingencyTSVFormat into a biom.Table
 @plugin.register_transformer
-def _6(ff: PepsirfContingencyTSVFormat) -> biom.Table:
-    pass
-
-# transform a biom.Table into a PepsirfContingencyTSV format
-@plugin.register_transformer
-def _7(ff: biom.Table) -> PepsirfContingencyTSVFormat:
-    result = PepsirfContingencyTSVFormat()
-
-    with open(str(result), 'w') as fh:
-        ff.to_tsv(direct_io=fh, observation_column_name='Sequence name')
-
-    return result
-
-@plugin.register_transformer
-def _9(ff: EpitopeFormat) -> pd.DataFrame:
+def _6(ff: EpitopeFormat) -> pd.DataFrame:
     result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
 
 @plugin.register_transformer
-def _8(ff: pd.DataFrame) -> EpitopeFormat:
+def _7(ff: pd.DataFrame) -> EpitopeFormat:
     result = EpitopeFormat()
     ff.to_csv(str(result), sep='\t')
     return result
 
 @plugin.register_transformer
-def _10(ff: MappedEpitopeFormat) -> pd.DataFrame:
+def _8(ff: MappedEpitopeFormat) -> pd.DataFrame:
     result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
 
 @plugin.register_transformer
-def _11(ff: pd.DataFrame) -> MappedEpitopeFormat:
+def _9(ff: pd.DataFrame) -> MappedEpitopeFormat:
     result = MappedEpitopeFormat()
     ff.to_csv(str(result), sep='\t')
     return result
 
 @plugin.register_transformer
-def _12(ff: GMTFormat) -> pd.DataFrame:
+def _10(ff: GMTFormat) -> pd.DataFrame:
     pass
 
 @plugin.register_transformer
-def _13(ff: pd.DataFrame) -> GMTFormat:
+def _11(ff: pd.DataFrame) -> GMTFormat:
     result = GMTFormat()
 
     with open(str(result), 'w') as fh:
