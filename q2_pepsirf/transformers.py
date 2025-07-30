@@ -93,7 +93,15 @@ def _9(ff: pd.DataFrame) -> MappedEpitopeFormat:
 
 @plugin.register_transformer
 def _10(ff: GMTFormat) -> pd.DataFrame:
-    pass
+     result = pd.DataFrame(columns=['EpitopeID'])
+
+     with open(str(ff)) as fh:
+         for line in fh.readlines():
+             speciesID, epitopeID = line.split('\t\t')
+             epitopeID = epitopeID.split('\t')
+             result.loc[speciesID] = [epitopeID]
+
+     result.index.name = 'SpeciesID'
 
 @plugin.register_transformer
 def _11(ff: pd.DataFrame) -> GMTFormat:
