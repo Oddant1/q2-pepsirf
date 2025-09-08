@@ -35,6 +35,7 @@ from qiime2.plugin import (
     Visualization, Metadata, TypeMap,
     Choices, Float, Bool
 )
+from q2_types.feature_data import FeatureData
 from q2_types.feature_table import FeatureTable, BIOMV210DirFmt
 
 import importlib
@@ -96,11 +97,11 @@ plugin.register_semantic_type_to_format(
     GMTDirFmt
 )
 plugin.register_semantic_type_to_format(
-    FeatureTable[Epitope],
+    FeatureData[Epitope],
     EpitopeDirFmt
 )
 plugin.register_semantic_type_to_format(
-    FeatureTable[MappedEpitope],
+    FeatureData[MappedEpitope],
     MappedEpitopeDirFmt
 )
 plugin.register_semantic_type_to_format(

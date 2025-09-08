@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from q2_types.feature_table import FeatureTable
+from q2_types.feature_data import FeatureData
 from qiime2.plugin import SemanticType
 
 import os
@@ -25,11 +26,11 @@ NormedSized = SemanticType(
 )
 Epitope = SemanticType(
     "Epitope",
-    variant_of=FeatureTable.field["content"]
+    variant_of=FeatureData.field["type"]
 )
 MappedEpitope = SemanticType(
     "MappedEpitope",
-    variant_of=FeatureTable.field["content"]
+    variant_of=FeatureData.field["type"]
 )
 GMT = SemanticType("GMT")
 Zscore = SemanticType("Zscore", variant_of=FeatureTable.field["content"])
