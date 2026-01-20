@@ -28,6 +28,10 @@ Epitope = SemanticType(
     "Epitope",
     variant_of=FeatureData.field["type"]
 )
+Enriched = SemanticType(
+    "Enriched",
+    variant_of=FeatureData.field["type"]
+)
 MappedEpitope = SemanticType(
     "MappedEpitope",
     variant_of=FeatureData.field["type"]
@@ -59,6 +63,14 @@ DemuxFastq = SemanticType("DemuxFastq")
 DemuxDiagnostic = SemanticType("DemuxDiagnostic")
 ProteinAlignment = SemanticType("ProteinAlignment")
 MutantReference = SemanticType("MutantReference")
+
+class EnrichedFormat(model.TextFileFormat):
+    def _validate_(self, level="min"):
+        pass
+
+EnrichedDirFormat = model.SingleFileDirectoryFormat(
+    "EnrichedDirFormat", "enriched.tsv", EnrichedFormat
+)
 
 class GMTFormat(model.TextFileFormat):
     def _validate_(self, level="min"):
