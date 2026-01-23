@@ -26,7 +26,7 @@ from q2_pepsirf.format_types import (
     PeptideToProteinAlignmentFormat, ProteinAlignmentDirFormat,
     MutantReference, MutantReferenceFileFmt, MutantReferenceDirFmt,
     ProteinAlignmentFmt, Epitope, MappedEpitope, EpitopeFormat, EpitopeDirFmt,
-    MappedEpitopeFormat, MappedEpitopeDirFmt, GMTFormat, GMTDirFmt, GMT
+    MappedEpitopeFormat, MappedEpitopeDirFmt,  GMTFormat, GMTDirFmt, GMT
 )
 from qiime2.plugin import (
     Plugin, SemanticType, model,

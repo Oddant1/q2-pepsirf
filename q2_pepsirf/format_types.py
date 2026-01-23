@@ -32,6 +32,10 @@ Enriched = SemanticType(
     "Enriched",
     variant_of=FeatureData.field["type"]
 )
+PSEAScores = SemanticType(
+    "PSEAScores",
+    variant_of=FeatureData.field["type"]
+)
 MappedEpitope = SemanticType(
     "MappedEpitope",
     variant_of=FeatureData.field["type"]
@@ -70,6 +74,14 @@ class EnrichedFormat(model.TextFileFormat):
 
 EnrichedDirFormat = model.SingleFileDirectoryFormat(
     "EnrichedDirFormat", "enriched.tsv", EnrichedFormat
+)
+
+class PSEAScoresFormat(model.TextFileFormat):
+    def _validate_(self, level="min"):
+        pass
+
+PSEAScoresDirFmt = model.SingleFileDirectoryFormat(
+    "PSEAScoresFormat", "scores.tsv", PSEAScoresFormat
 )
 
 class GMTFormat(model.TextFileFormat):

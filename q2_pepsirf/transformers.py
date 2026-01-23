@@ -2,7 +2,7 @@
 from q2_pepsirf.format_types import (
     PepsirfContingencyTSVFormat, PepsirfInfoSumOfProbesFmt,
     EnrichedPeptideDirFmt, PeptideIDListFmt, EpitopeFormat,
-    MappedEpitopeFormat, GMTFormat, EnrichedFormat
+    MappedEpitopeFormat, GMTFormat, EnrichedFormat, PSEAScoresFormat
 )
 from q2_pepsirf.plugin_setup import plugin
 from q2_types.feature_table import BIOMV210Format
@@ -124,4 +124,15 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
 def _12(ff: pd.DataFrame) -> EnrichedFormat:
     result = EnrichedFormat()
     ff.to_csv(str(result), sep='\t')
+    return result
+
+@plugin.register_transformer
+def _13(ff: pd.DataFrame) -> PSEAScoresFormat:
+    result = PSEAScoresFormat()
+    ff.to_csv(str(result), sep='\t')
+    return result
+
+@plugin.register_transformer
+def _14(ff: PSEAScoresFormat) -> pd.DataFrame:
+    result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
