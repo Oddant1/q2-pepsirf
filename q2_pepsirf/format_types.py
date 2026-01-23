@@ -81,7 +81,7 @@ class PSEAScoresFormat(model.TextFileFormat):
         pass
 
 PSEAScoresDirFmt = model.SingleFileDirectoryFormat(
-    "PSEAScoresFormat", "scores.tsv", PSEAScoresFormat
+    "PSEAScoresDirgitFormat", "scores.tsv", PSEAScoresFormat
 )
 
 class GMTFormat(model.TextFileFormat):
