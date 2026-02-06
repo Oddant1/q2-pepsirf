@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import ast
+
 from q2_pepsirf.format_types import (
     PepsirfContingencyTSVFormat, PepsirfInfoSumOfProbesFmt,
     EnrichedPeptideDirFmt, PeptideIDListFmt, EpitopeFormat,
@@ -83,6 +85,8 @@ def _7(ff: pd.DataFrame) -> EpitopeFormat:
 @plugin.register_transformer
 def _8(ff: MappedEpitopeFormat) -> pd.DataFrame:
     result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
+    result['Subtype'] = result['Subtype'].apply(ast.literal_eval)
+    result['CodeName'] = result['CodeName'].apply(ast.literal_eval)
     return result
 
 @plugin.register_transformer
