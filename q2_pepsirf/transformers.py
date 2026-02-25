@@ -72,6 +72,14 @@ def _5(ff: PepsirfContingencyTSVFormat) -> pd.DataFrame:
     return dataframe.transpose()
 
 @plugin.register_transformer
+def _15(ff: pd.DataFrame) -> PepsirfContingencyTSVFormat:
+    result = PepsirfContingencyTSVFormat()
+    ff.index.name = "Sequence name"
+    ff.to_csv(str(result), sep="\t")
+
+    return result
+
+@plugin.register_transformer
 def _6(ff: EpitopeFormat) -> pd.DataFrame:
     result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     return result
