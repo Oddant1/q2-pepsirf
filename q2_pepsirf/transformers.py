@@ -106,6 +106,7 @@ def _10(ff: GMTFormat) -> pd.DataFrame:
              result.loc[speciesID] = [epitopeID]
 
      result.index.name = 'SpeciesID'
+     return result
 
 @plugin.register_transformer
 def _11(ff: pd.DataFrame) -> GMTFormat:
