@@ -4,6 +4,7 @@ from q2_types.feature_data import FeatureData
 from qiime2.plugin import SemanticType
 
 import os
+import pandas as pd
 import qiime2.plugin.model as model
 
 # create a semantic type for each format type created
@@ -94,16 +95,61 @@ GMTDirFmt = model.SingleFileDirectoryFormat(
 
 # create a format for epitope metadata
 class EpitopeFormat(model.TextFileFormat):
+    REQUIRED_COLUMNS = [
+        'CodeName', 'Category', 'SpeciesID', 'ClusterID', 'EpitopeWindow',
+        'Species', 'Subtype'
+    ]
+
     def _validate_(self, level="min"):
-        pass
+        _validate_columns(self.path, self.REQUIRED_COLUMNS, 'EpitopeFormat')
 
 EpitopeDirFmt = model.SingleFileDirectoryFormat(
     "EpitopeDirFmt", "epitope.tsv", EpitopeFormat
 )
 
 class MappedEpitopeFormat(model.TextFileFormat):
+    REQUIRED_COLUMNS = [
+        'EpitopeID', 'CodeName', 'Category', 'SpeciesID', 'Species', 'Subtype',
+    ]
+
     def _validate_(self, level="min"):
-        pass
+        _validate_columns(
+            self.path, self.REQUIRED_COLUMNS, 'MappedEpitopeFormat'
+        )
+
+def _validate_columns(path, required_columns, format):
+    """
+    Validates that the tsv we are using has at least the minimum required
+    columns. Extra columns are fine.
+
+    Parameters
+    ----------
+    path : str or Pathlike
+        The path to the .tsv we are looking at.
+    required_columns : list[str]
+        The columns that must be present in the .tsv.
+    format : str
+        The format we are looking at. To be templated into the error message if
+        columns are missing.
+
+    Raises
+    ------
+    TypeError
+        If we are missing any required columns.
+    """
+    df = pd.read_csv(path, sep='\t')
+
+    missing_columns = []
+
+    for column in required_columns:
+        if not column in df.columns:
+            missing_columns.append(column)
+
+    if missing_columns:
+        raise TypeError(
+            f"Missing the following columns for {format}:"
+            f" {missing_columns}\n"
+            f"Required columns are as follows: {required_columns}\n")
 
 MappedEpitopeDirFmt = model.SingleFileDirectoryFormat(
     "MappedEpitopeDirFmt", "mapped-epitope.tsv", MappedEpitopeFormat
