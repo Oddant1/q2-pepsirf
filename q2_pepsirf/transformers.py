@@ -125,7 +125,7 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
             line = row.name + "\t\t"
 
             for elem in row['EpitopeID']:
-                line += elem + '\t'
+                line += str(elem) + '\t'
 
             line = line.rstrip()
             line += '\n'
