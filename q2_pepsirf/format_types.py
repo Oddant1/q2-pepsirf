@@ -137,7 +137,7 @@ def _validate_columns(path, required_columns, format):
     TypeError
         If we are missing any required columns.
     """
-    df = pd.read_csv(path, sep='\t')
+    df = pd.read_csv(path, sep='\t', low_memory=False)
 
     missing_columns = []
 
