@@ -105,30 +105,39 @@ def _9(ff: pd.DataFrame) -> MappedEpitopeFormat:
 
 @plugin.register_transformer
 def _10(ff: GMTFormat) -> pd.DataFrame:
-     result = pd.DataFrame(columns=['EpitopeID'])
+    result = pd.DataFrame(columns=['gene'])
 
-     with open(str(ff)) as fh:
-         for line in fh.readlines():
-             speciesID, epitopeID = line.split('\t\t')
-             epitopeID = epitopeID.split('\t')
-             result.loc[speciesID] = [epitopeID]
+    with open(str(ff)) as fh:
+        for line in fh.readlines():
+            speciesID, epitopeID = line.split('\t\t')
+            epitopeID = epitopeID.split('\t')
+            result.loc[speciesID] = [epitopeID]
 
-     result.index.name = 'SpeciesID'
-     return result
+    result.index.name = 'term'
+    result = result.explode('gene')
+    result = result.reset_index()
+
+    return result
 
 @plugin.register_transformer
 def _11(ff: pd.DataFrame) -> GMTFormat:
     result = GMTFormat()
 
-    with open(str(result), 'w') as fh:
-        for _, row in ff.iterrows():
-            line = row.name + "\t\t"
+    ff = ff.groupby(['term'])
+    ff = ff['gene'].unique()
+    ff = ff.reset_index()
 
-            for elem in row['EpitopeID']:
+    with open(str(result), 'w') as fh:
+        for idx, row in ff.iterrows():
+            line = row['term'] + "\t\t"
+
+            for elem in row['gene']:
                 line += str(elem) + '\t'
 
             line = line.rstrip()
-            line += '\n'
+            if idx < len(ff) - 1:
+                line += '\n'
+
             fh.write(line)
 
     return result
