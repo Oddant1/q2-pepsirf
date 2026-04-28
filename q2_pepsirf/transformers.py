@@ -95,6 +95,7 @@ def _8(ff: MappedEpitopeFormat) -> pd.DataFrame:
     result = pd.read_csv(str(ff), sep='\t', index_col=0, low_memory=False)
     result['Subtype'] = result['Subtype'].apply(ast.literal_eval)
     result['CodeName'] = result['CodeName'].apply(ast.literal_eval)
+    result['SpeciesID'] = result['SpeciesID'].apply(ast.literal_eval)
     return result
 
 @plugin.register_transformer
