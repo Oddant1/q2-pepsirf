@@ -109,7 +109,7 @@ def _10(ff: GMTFormat) -> pd.DataFrame:
     result = pd.DataFrame(columns=['gene'])
 
     with open(str(ff)) as fh:
-        for line in fh.readlines():
+        for line in fh.read().splitlines():
             speciesID, epitopeID = line.split('\t\t')
             epitopeID = epitopeID.split('\t')
             result.loc[speciesID] = [epitopeID]
@@ -128,18 +128,18 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
     ff = ff['gene'].unique()
     ff = ff.reset_index()
 
+    lines = []
+
     with open(str(result), 'w') as fh:
-        for idx, row in ff.iterrows():
+        def _append_lines(row):
             line = row['term'] + "\t\t"
+            line += '\t'.join(row['gene'])
+            lines.append(line)
 
-            for elem in row['gene']:
-                line += str(elem) + '\t'
+        ff.apply(_append_lines, axis=1)
 
-            line = line.rstrip()
-            if idx < len(ff) - 1:
-                line += '\n'
-
-            fh.write(line)
+        lines = '\n'.join(lines)
+        fh.writelines(lines)
 
     return result
 
