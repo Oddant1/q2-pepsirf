@@ -81,7 +81,7 @@ class PSEAScoresFormat(model.TextFileFormat):
     def _validate_(self, level="min"):
         pass
 
-PSEAScoresDirFmt = model.SingleFileDirectoryFormat(
+PSEAScoresDirFormat = model.SingleFileDirectoryFormat(
     "PSEAScoresDirFormat", "scores.tsv", PSEAScoresFormat
 )
 

@@ -27,7 +27,7 @@ from q2_pepsirf.format_types import (
     MutantReference, MutantReferenceFileFmt, MutantReferenceDirFmt,
     ProteinAlignmentFmt, Enriched, PSEAScores, Epitope, MappedEpitope,
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
-    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFmt,
+    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat,
     GMTFormat, GMTDirFmt, GMT
 )
 from qiime2.plugin import (
@@ -85,7 +85,7 @@ plugin.register_formats(
     PeptideToProteinAlignmentFormat, ProteinAlignmentFmt,
     ProteinAlignmentDirFormat, MutantReferenceFileFmt, MutantReferenceDirFmt,
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
-    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFmt,
+    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat,
     GMTFormat, GMTDirFmt
 )
 
@@ -101,7 +101,7 @@ plugin.register_semantic_type_to_format(
 )
 plugin.register_semantic_type_to_format(
     FeatureData[PSEAScores],
-    PSEAScoresDirFmt
+    PSEAScoresDirFormat
 )
 plugin.register_semantic_type_to_format(
     GMT,
