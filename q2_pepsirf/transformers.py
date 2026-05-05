@@ -144,10 +144,40 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
 
     return result
 
+
+# TODO: Refactor this
+def _dedup_multi_index(df):
+    # Taken from StackOverflow
+    # https://stackoverflow.com/questions/51313171/
+    # pandas-multiindex-to-csv-without-duplicate-index
+    new_df = df.copy()
+
+    for i in range(df.index.nlevels, 0, -1):
+        new_df = new_df.sort_index(level=i-1)
+
+    replace_cols = dict()
+
+    for i in range(new_df.index.nlevels):
+        idx = new_df.index.get_level_values(i)
+
+        new_df.insert(i, idx.name, idx)
+
+        replace_cols[idx.name] = \
+            new_df[idx.name].where(
+                ~new_df.duplicated(subset=new_df.index.names[:i+1])
+            )
+
+    for col, ser in replace_cols.items():
+        new_df[col] = ser
+
+    return new_df.reset_index(drop=True)
+
+
 @plugin.register_transformer
 def _12(ff: pd.DataFrame) -> EnrichedFormat:
     result = EnrichedFormat()
-    ff.to_csv(str(result), sep='\t')
+    ff = _dedup_multi_index(ff)
+    ff.to_csv(str(result), sep='\t', index=False)
     return result
 
 @plugin.register_transformer
