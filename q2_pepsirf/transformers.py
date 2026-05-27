@@ -147,6 +147,9 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
 
 # TODO: Refactor this
 def _dedup_multi_index(df):
+    if df.empty:
+        return df
+
     # Taken from StackOverflow
     # https://stackoverflow.com/questions/51313171/
     # pandas-multiindex-to-csv-without-duplicate-index
