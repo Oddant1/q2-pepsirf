@@ -29,7 +29,9 @@ from q2_pepsirf.format_types import (
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
     MappedPeptide, MappedPeptideFormat, MappedPeptideDirFmt, EnrichedFormat,
     EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat, GMTFormat,
-    GMTDirFmt, GMT
+    GMTDirFmt, GMT, PSEAAECountsDirFmt, PSEAAECountsTSVFormat,
+    PSEAPairsTSVFormat, PSEAPairsDirFmt, SplineDirFmt, SplineTSVFormat,
+    PSEAAECounts, PSEAPairs, Spline
 )
 from qiime2.plugin import (
     Plugin, SemanticType, model,
@@ -88,7 +90,8 @@ plugin.register_formats(
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
     MappedPeptideFormat, MappedPeptideDirFmt, EnrichedFormat,
     EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat, GMTFormat,
-    GMTDirFmt
+    GMTDirFmt, PSEAAECountsDirFmt, PSEAAECountsTSVFormat, PSEAPairsTSVFormat,
+    PSEAPairsDirFmt, SplineDirFmt, SplineTSVFormat,
 )
 
 # register all semantic types
@@ -224,6 +227,12 @@ plugin.register_semantic_type_to_format(
     MutantReference,
     MutantReferenceDirFmt
 )
+plugin.register_semantic_type_to_format(PSEAAECounts, PSEAAECountsDirFmt)
+plugin.register_semantic_type_to_format(PSEAPairs, PSEAPairsDirFmt)
+plugin.register_semantic_type_to_format(
+    FeatureData[Spline], SplineDirFmt
+)
+
 
 # create a type map to change outputs dependent on str choice
 T_approach, T_out = TypeMap ({

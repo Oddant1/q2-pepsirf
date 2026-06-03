@@ -5,7 +5,8 @@ from q2_pepsirf.format_types import (
     PepsirfContingencyTSVFormat, PepsirfInfoSumOfProbesFmt,
     EnrichedPeptideDirFmt, PeptideIDListFmt, EpitopeFormat,
     MappedEpitopeFormat, MappedPeptideFormat, GMTFormat, EnrichedFormat,
-    PSEAScoresFormat
+    PSEAScoresFormat, PSEAPairsTSVFormat, PSEAAECountsTSVFormat,
+    SplineTSVFormat
 )
 from q2_pepsirf.plugin_setup import plugin
 from q2_types.feature_table import BIOMV210Format
@@ -144,8 +145,6 @@ def _11(ff: pd.DataFrame) -> GMTFormat:
 
     return result
 
-
-# TODO: Refactor this
 def _dedup_multi_index(df):
     if df.empty:
         return df
@@ -175,7 +174,6 @@ def _dedup_multi_index(df):
 
     return new_df.reset_index(drop=True)
 
-
 @plugin.register_transformer
 def _12(ff: pd.DataFrame) -> EnrichedFormat:
     result = EnrichedFormat()
@@ -204,4 +202,47 @@ def _15(ff: MappedPeptideFormat) -> pd.DataFrame:
 def _16(ff: pd.DataFrame) -> MappedPeptideFormat:
     result = MappedPeptideFormat()
     ff.to_csv(str(result), sep='\t')
+    return result
+
+@plugin.register_transformer
+def _psea_pairs_tsv_to_df(ff: PSEAPairsTSVFormat) -> pd.DataFrame:
+    return pd.read_csv(str(ff), sep="\t", header=0)
+
+@plugin.register_transformer
+def _df_to_psea_pairs_tsv(df: pd.DataFrame) -> PSEAPairsTSVFormat:
+    result = PSEAPairsTSVFormat()
+    df.to_csv(str(result), sep="\t", index=False)
+    return result
+
+@plugin.register_transformer
+def _psea_pairs_tsv_to_list(ff: PSEAPairsTSVFormat) -> list:
+    pairs = []
+    with open(str(ff)) as fh:
+        # Skip header
+        fh.readline()
+        for line in fh.readlines():
+            # rstrip to ensure newline is gone then replace tabs with ~ for
+            # pair name
+            pairs.append(line.rstrip().replace("\t", "~"))
+
+    return pairs
+
+@plugin.register_transformer
+def _ae_counts_tsv_to_df(ff: PSEAAECountsTSVFormat) -> pd.DataFrame:
+    return pd.read_csv(str(ff), sep="\t", header=0)
+
+@plugin.register_transformer
+def _df_to_ae_counts_tsv(df: pd.DataFrame) -> PSEAAECountsTSVFormat:
+    result = PSEAAECountsTSVFormat()
+    df.to_csv(str(result), sep="\t", index=False)
+    return result
+
+@plugin.register_transformer
+def _spline_tsv_to_df(ff: SplineTSVFormat) -> pd.DataFrame:
+    return pd.read_csv(str(ff), sep="\t", index_col=0)
+
+@plugin.register_transformer
+def _df_to_spline_tsv(df: pd.DataFrame) -> SplineTSVFormat:
+    result = SplineTSVFormat()
+    df.to_csv(str(result), sep="\t", index=True)
     return result
