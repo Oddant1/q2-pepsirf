@@ -41,10 +41,6 @@ MappedEpitope = SemanticType(
     "MappedEpitope",
     variant_of=FeatureData.field["type"]
 )
-MappedPeptide = SemanticType(
-    "MappedPeptide",
-    variant_of=FeatureData.field["type"]
-)
 GMT = SemanticType("GMT")
 Zscore = SemanticType("Zscore", variant_of=FeatureTable.field["content"])
 RawCounts = SemanticType("RawCounts", variant_of=FeatureTable.field["content"])
@@ -124,14 +120,6 @@ class MappedEpitopeFormat(model.TextFileFormat):
             self.path, self.REQUIRED_COLUMNS, 'MappedEpitopeFormat'
         )
 
-class MappedPeptideFormat(model.TextFileFormat):
-    REQUIRED_COLUMNS = ['CodeName', 'EpitopeID']
-
-    def _validate_(self, level="min"):
-        _validate_columns(
-            self.path, self.REQUIRED_COLUMNS, 'MappedPeptideFormat'
-        )
-
 
 def _validate_columns(path, required_columns, format):
     """
@@ -171,9 +159,6 @@ MappedEpitopeDirFmt = model.SingleFileDirectoryFormat(
     "MappedEpitopeDirFmt", "mapped-epitope.tsv", MappedEpitopeFormat
 )
 
-MappedPeptideDirFmt = model.SingleFileDirectoryFormat(
-    "MappedPeptideDirFmt", "mapped-peptide.tsv", MappedPeptideFormat
-)
 
 # create a format for a featuretable file
 class PepsirfContingencyTSVFormat(model.TextFileFormat):

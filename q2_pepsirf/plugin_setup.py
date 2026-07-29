@@ -27,9 +27,8 @@ from q2_pepsirf.format_types import (
     MutantReference, MutantReferenceFileFmt, MutantReferenceDirFmt,
     ProteinAlignmentFmt, Enriched, PSEAScores, Epitope, MappedEpitope,
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
-    MappedPeptide, MappedPeptideFormat, MappedPeptideDirFmt, EnrichedFormat,
-    EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat, GMTFormat,
-    GMTDirFmt, GMT, PSEAAECountsDirFmt, PSEAAECountsTSVFormat,
+    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat,
+    GMTFormat, GMTDirFmt, GMT, PSEAAECountsDirFmt, PSEAAECountsTSVFormat,
     PSEAPairsTSVFormat, PSEAPairsDirFmt, SplineDirFmt, SplineTSVFormat,
     PSEAAECounts, PSEAPairs, Spline
 )
@@ -88,17 +87,16 @@ plugin.register_formats(
     PeptideToProteinAlignmentFormat, ProteinAlignmentFmt,
     ProteinAlignmentDirFormat, MutantReferenceFileFmt, MutantReferenceDirFmt,
     EpitopeFormat, EpitopeDirFmt, MappedEpitopeFormat, MappedEpitopeDirFmt,
-    MappedPeptideFormat, MappedPeptideDirFmt, EnrichedFormat,
-    EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat, GMTFormat,
-    GMTDirFmt, PSEAAECountsDirFmt, PSEAAECountsTSVFormat, PSEAPairsTSVFormat,
-    PSEAPairsDirFmt, SplineDirFmt, SplineTSVFormat,
+    EnrichedFormat, EnrichedDirFormat, PSEAScoresFormat, PSEAScoresDirFormat,
+    GMTFormat, GMTDirFmt, PSEAAECountsDirFmt, PSEAAECountsTSVFormat,
+    PSEAPairsTSVFormat, PSEAPairsDirFmt, SplineDirFmt, SplineTSVFormat,
 )
 
 # register all semantic types
 plugin.register_semantic_types(
     Normed, NormedDifference, NormedDiffRatio, NormedRatio,
     NormedSized, Zscore, RawCounts, PairwiseEnrichment, Epitope, MappedEpitope,
-    MappedPeptide, Enriched, PSEAScores, GMT
+    Enriched, PSEAScores, GMT
 )
 plugin.register_semantic_type_to_format(
     FeatureData[Enriched],
@@ -119,10 +117,6 @@ plugin.register_semantic_type_to_format(
 plugin.register_semantic_type_to_format(
     FeatureData[MappedEpitope],
     MappedEpitopeDirFmt
-)
-plugin.register_semantic_type_to_format(
-    FeatureData[MappedPeptide],
-    MappedPeptideDirFmt
 )
 plugin.register_semantic_type_to_format(
     FeatureTable[
